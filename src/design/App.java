@@ -918,30 +918,18 @@ public class App {
 		return testPassed;
 	}
 	/*
-	 * Checks given boolean values. Used for checking if output formats are selected and displaying an error message if not
-	 * Returns true if there is no error
-	 */
-	private boolean checkFormatSelected(boolean isPDF, boolean isCSV, boolean isHTML) {
-		if(!isPDF && !isCSV && !isHTML) {
-			Util.errorDialog("Format error", "You must select atleast one output format");
-			return false;
-		} else {
-			return true;
-		}
-	}
-	/*
 	 * Reports
 	 * 		Checks if there was atleast one ouput format selected and gets name
 	 */
 	
 	private void generateReport(Panels panel) {
 		if(panel == panel.FIRST_REPORT_PANEL) {
-			if(checkFormatSelected(isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected())) {
+			if(Util.checkFormatSelected(isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected())) {
 				generateFirstReport(Util.getFileName(), (Department) comboBoxFirstReportDepartments.getSelectedItem());
 				Util.informationDialog("Success", "Report generated successfully.");
 			}
 		} else if(panel == panel.SECOND_REPORT_PANEL) {
-			if(checkFormatSelected(isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected())) {
+			if(Util.checkFormatSelected(isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected())) {
 				generateSecondReport(Util.getFileName(), (Employee) comboBoxSecondReportEmployees.getSelectedItem());
 				Util.informationDialog("Success", "Report generated successfully.");
 			}
@@ -950,7 +938,7 @@ public class App {
 				// Check if dates are OK
 				if(checkDateInput()) {
 					// Check if output format is selected
-					if(checkFormatSelected(isPDFThirdReport.isSelected(), isCSVThirdReport.isSelected(), isHTMLThirdReport.isSelected())) {
+					if(Util.checkFormatSelected(isPDFThirdReport.isSelected(), isCSVThirdReport.isSelected(), isHTMLThirdReport.isSelected())) {
 						generateThirdReport(Util.getFileName(), dateFrom, dateTo, getDateStrFromPicker(dateFromPicker),  getDateStrFromPicker(dateToPicker));
 						Util.informationDialog("Success", "Report generated successfully.");
 					}

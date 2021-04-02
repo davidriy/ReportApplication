@@ -51,4 +51,16 @@ public class Util {
 		}
 		return null;
 	}
+	/*
+	 * Checks given boolean values. Used for checking if output formats are selected and displaying an error message if not
+	 * Returns true if there is no error
+	 */
+	public static boolean checkFormatSelected(boolean isPDF, boolean isCSV, boolean isHTML) {
+		if(!isPDF && !isCSV && !isHTML) {
+			errorDialog("Format error", "You must select atleast one output format");
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
