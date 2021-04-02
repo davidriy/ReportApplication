@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configurations>
+                                                                                                        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+
+    
+    
+        
+    
+    
+    
+            
+    
+
+    
+    
+    
+    
+            
+    
+    
+    
+    
+            
+
+    
+    
+    
+        
+    
+    
+    
+
+    
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+                    
+    
+    
+    
+    
+    
+                
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    
+        
+
+    
+
+    
+    
+        
+    
+    <configuration>
+                        
+        
+        <name>Local</name>
+                        
+        
+        <ip>localhost</ip>
+                        
+        
+        <port>3306</port>
+                        
+        
+        <path>C:\Users\David-Clase\Desktop</path>
+                        
+        
+        <username>root</username>
+                        
+        
+        <password>root</password>
+                    
+    
+    </configuration>
+        
+
+</configurations>

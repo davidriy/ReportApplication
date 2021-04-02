@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ThirdReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="391b3210-d14b-415e-b3e3-3d3ef230d168">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="EmployeesLocalHost"/>
+	<parameter name="inputDateFrom" class="java.lang.String"/>
+	<parameter name="inputDateTo" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.lang.String"/>
+	<parameter name="dateTo" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+CONCAT(CONCAT(E.FIRST_NAME, ' '), E.LAST_NAME) NAME,
+E.EMP_NO,
+E.BIRTH_DATE,
+D.DEPT_NAME DEPARTMENT,
+S.SALARY PRESENT_SALARY,
+date_format(DE.from_date, '%d/%m/%Y') initialDate,
+date_format(DE.to_date, '%d/%m/%Y') finalDate
+FROM employees E
+INNER JOIN dept_emp DE ON E.EMP_NO = DE.EMP_NO
+INNER JOIN departments D ON DE.DEPT_NO = D.DEPT_NO
+INNER JOIN salaries S ON E.EMP_NO = S.EMP_NO
+WHERE DE.from_date >=  STR_TO_DATE( $P{inputDateFrom} , '%d%m%Y')
+AND DE.to_date <=  STR_TO_DATE($P{inputDateTo}, '%d%m%Y')
+AND S.FROM_DATE = ( SELECT MAX(FROM_DATE) FROM salaries WHERE EMP_NO = E.EMP_NO)
+ORDER BY D.DEPT_NAME, E.FIRST_NAME]]>
+	</queryString>
+	<field name="NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NAME"/>
+		<property name="com.jaspersoft.studio.field.label" value="NAME"/>
+	</field>
+	<field name="EMP_NO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="emp_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="EMP_NO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="employees"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="BIRTH_DATE" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="birth_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="BIRTH_DATE"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="employees"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DEPARTMENT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dept_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="DEPARTMENT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="departments"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRESENT_SALARY" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="salary"/>
+		<property name="com.jaspersoft.studio.field.label" value="PRESENT_SALARY"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="salaries"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="initialDate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="initialDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="initialDate"/>
+	</field>
+	<field name="finalDate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="finalDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="finalDate"/>
+	</field>
+	<group name="DEPTARTMENT">
+		<groupExpression><![CDATA[$F{DEPARTMENT}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<rectangle>
+					<reportElement x="0" y="0" width="553" height="37" backcolor="#DEECFC" uuid="5988ee5b-e33f-4969-8465-0dc0eac3b72e"/>
+				</rectangle>
+				<textField>
+					<reportElement x="0" y="0" width="552" height="36" uuid="3f797535-70d8-43ec-941c-fb61c89016e3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DEPARTMENT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="553" height="81" backcolor="#DEECFC" uuid="cf6fbce4-1981-4065-b651-170a968e4236"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="10" width="533" height="30" uuid="29ada54a-0fdb-44b1-8591-19cc9a9a83ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Employees by department]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="39" width="532" height="30" uuid="fa7fcda1-6e1c-4e3c-8301-72b9182e8150"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From " + $P{dateFrom} + " to " + $P{dateTo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="553" height="30" backcolor="#DEDFFC" uuid="6851b5a4-0a8b-49b7-9d47-4926195cc54f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="0" width="120" height="30" uuid="26119105-3b38-415f-bc11-54e3eba7cbf4"/>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="59" height="30" uuid="ef8f7c65-8245-4f12-b2ec-de0d58276d54"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="0" width="120" height="30" uuid="3bf4fb69-4713-486a-9836-2bb35e56fcdc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Birthdate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="0" width="71" height="30" uuid="44740655-4ee8-446b-be26-0ca1b13cf76b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Salary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="79" height="30" uuid="6deb2f4c-59cd-47a4-92db-476b5ea5f0ab"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Initial date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="84" height="30" uuid="81c65947-a29b-4907-b31f-e81cdfc03a71"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Final date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50">
+			<textField>
+				<reportElement x="10" y="0" width="119" height="30" uuid="cda4c0ba-b02d-4a07-9a96-990ae78574bc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0691d81d-4726-40c1-831b-7fc96e486935"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="58" height="30" uuid="cfdc20eb-cb3f-48e9-b164-e66bba8cf1b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a73d0e0e-4cf8-4d16-952a-4d33aac3a6c7"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMP_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="0" width="119" height="30" uuid="92e11637-7993-42f0-98a1-7953d012f387">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="821731e6-1fe5-41c4-83d8-e2d68ec9e0a6"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BIRTH_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="0" width="71" height="30" uuid="19c315a3-5c77-496a-9afd-2471db594628">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53125d97-25da-442f-bf17-ed29bf00ec93"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRESENT_SALARY} + "€"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="79" height="30" uuid="1cf37356-1346-4814-ae97-4ada62ad44b2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53125d97-25da-442f-bf17-ed29bf00ec93"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{initialDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="91" height="30" uuid="d6e5d2c5-0e92-4a02-a02f-7b4787940fad">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53125d97-25da-442f-bf17-ed29bf00ec93"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{finalDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="490" y="0" width="84" height="30" uuid="1b7c6004-f3a0-4c1a-91bd-45cb9dbd4fbf"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="5" width="110" height="20" uuid="e2cdc3b4-c7e6-4e12-8b2e-c8617b4f35a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Report designed by David Riy]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
