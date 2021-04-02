@@ -925,13 +925,21 @@ public class App {
 	private void generateReport(Panels panel) {
 		if(panel == panel.FIRST_REPORT_PANEL) {
 			if(Util.checkFormatSelected(isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected())) {
-				generateFirstReport(Util.getFileName(), (Department) comboBoxFirstReportDepartments.getSelectedItem());
-				Util.informationDialog("Success", "Report generated successfully.");
+				String name = Util.getFileName();
+				if(name != null) {
+					generateFirstReport(name, (Department) comboBoxFirstReportDepartments.getSelectedItem());
+					Util.informationDialog("Success", "Report generated successfully.");
+				}
+				
 			}
 		} else if(panel == panel.SECOND_REPORT_PANEL) {
 			if(Util.checkFormatSelected(isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected())) {
-				generateSecondReport(Util.getFileName(), (Employee) comboBoxSecondReportEmployees.getSelectedItem());
-				Util.informationDialog("Success", "Report generated successfully.");
+				String name = Util.getFileName();
+				if(name != null) {
+					generateSecondReport(name, (Employee) comboBoxSecondReportEmployees.getSelectedItem());
+					Util.informationDialog("Success", "Report generated successfully.");
+				}
+				
 			}
 		} else if(panel == panel.THIRD_REPORT_PANEL) {
 			if(dateFrom != null && dateTo != null) {
@@ -939,8 +947,12 @@ public class App {
 				if(checkDateInput()) {
 					// Check if output format is selected
 					if(Util.checkFormatSelected(isPDFThirdReport.isSelected(), isCSVThirdReport.isSelected(), isHTMLThirdReport.isSelected())) {
-						generateThirdReport(Util.getFileName(), dateFrom, dateTo, getDateStrFromPicker(dateFromPicker),  getDateStrFromPicker(dateToPicker));
-						Util.informationDialog("Success", "Report generated successfully.");
+						String name = Util.getFileName();
+						if(name != null) {
+							generateThirdReport(name, dateFrom, dateTo, getDateStrFromPicker(dateFromPicker),  getDateStrFromPicker(dateToPicker));
+							Util.informationDialog("Success", "Report generated successfully.");
+						}
+						
 					}
 				}					
 			} else {
@@ -978,9 +990,7 @@ public class App {
 	 */
 	private void generateThirdReport(String name, String dateFrom, String dateTo, String dateFromShow, String dateToShow) {
 		try {
-			JasperUtil.generateThirdReport(dateFrom, dateTo, dateFromShow, dateToShow, name, configuration);
-			Util.informationDialog("Success", "Report generated successfully.");
-			
+			JasperUtil.generateThirdReport(dateFrom, dateTo, dateFromShow, dateToShow, name, configuration);			
 		} catch (JRException e) {
 			Util.errorDialog("JasperReports error", e.getMessage());
 		}
