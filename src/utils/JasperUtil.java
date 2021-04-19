@@ -27,7 +27,7 @@ public class JasperUtil {
 	/*
 	 * Variables used to find reports path
 	 */
-	private static final String folderPath = System.getProperty("user.dir") + "\\Reports\\";
+	private static final String folderPath = System.getProperty("user.dir") + "//Reports//";
 	private static final String FIRST_REPORT_SRC = folderPath + "FirstReport.jrxml";
 	private static final String SECOND_REPORT_SRC = folderPath + "SecondReport.jrxml";
 	private static final String THIRD_REPORT_SRC = folderPath + "ThirdReport.jrxml";
