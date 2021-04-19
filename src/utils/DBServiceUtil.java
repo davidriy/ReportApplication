@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entities.Configuration;
 import entities.Department;
 import entities.Employee;
 
 public class DBServiceUtil {
 	// Additional DB properties
 	public static final String ADDITIONAL_SQL_CONFIGURATION = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"; 
-	public static final String GET_EMPLOYEES_SQL = "SELECT * FROM EMPLOYEES ORDER BY EMP_NO";
-	public static final String GET_DEPARTMENTS_SQL = "SELECT * FROM DEPARTMENTS ORDER BY DEPT_NO";
+	public static final String GET_EMPLOYEES_SQL = "SELECT * FROM employees ORDER BY emp_no";
+	public static final String GET_DEPARTMENTS_SQL = "SELECT * FROM departments ORDER BY dept_no";
 	
 	// Return the connection from the specified parameters
 	public static Connection databaseConnect(String url, String user, String password) {
@@ -56,15 +57,15 @@ public class DBServiceUtil {
 		return databaseConnect(url, username, password);
 	}
 	// Obtains an ArrayList of employees
-	public static ArrayList<Employee> getEmployeeList(){
+	public static ArrayList<Employee> getEmployeeList(Configuration configuration){
 		ArrayList<Employee> list = new ArrayList<Employee>();
 		Employee employee = new Employee();
 		try {
-			Connection connection = getConnectionEmployees();
+			Connection connection = getConnection(configuration.getIp(), Integer.valueOf(configuration.getPort()), configuration.getUsername(), configuration.getPassword());
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(GET_EMPLOYEES_SQL);
 			while(rs.next()) {
-				employee = new Employee(rs.getInt("EMP_NO"), rs.getString("FIRST_NAME"), rs.getString("LAST_NAME"));
+				employee = new Employee(rs.getInt("emp_no"), rs.getString("first_name"), rs.getString("last_name"));
 				list.add(employee);
 			}
 			connection.close();
@@ -76,15 +77,15 @@ public class DBServiceUtil {
 		return list;
 	}
 	// Obtains an ArrayList of departments
-	public static ArrayList<Department> getDepartmentList(){
+	public static ArrayList<Department> getDepartmentList(Configuration configuration){
 		ArrayList<Department> list = new ArrayList<Department>();
 		Department department;
 		try {
-			Connection connection = getConnectionEmployees();
+			Connection connection = getConnection(configuration.getIp(), Integer.valueOf(configuration.getPort()), configuration.getUsername(), configuration.getPassword());
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(GET_DEPARTMENTS_SQL);
 			while(rs.next()) {
-				department = new Department(rs.getString("DEPT_NO"), rs.getString("DEPT_NAME"));
+				department = new Department(rs.getString("dept_no"), rs.getString("dept_name"));
 				list.add(department);
 			}
 			connection.close();

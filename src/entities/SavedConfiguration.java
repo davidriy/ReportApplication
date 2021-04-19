@@ -1,5 +1,7 @@
 package entities;
-
+/*
+ * SavedConfiguration class - adds an indentifier name to Configuration objects
+ */
 public class SavedConfiguration extends Configuration{
 	String name;
 	

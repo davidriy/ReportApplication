@@ -1,5 +1,7 @@
 package entities;
-
+/*
+ * Employee class
+ */
 public class Employee {
 	private Integer empNo;
 	private String firstName;

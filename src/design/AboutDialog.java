@@ -17,6 +17,9 @@ import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/*
+ * Dialog for About information
+ */
 public class AboutDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -48,7 +51,14 @@ public class AboutDialog extends JDialog {
 		txtrThisIsA.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtrThisIsA.setBackground(SystemColor.menu);
 		txtrThisIsA.setEditable(false);
-		txtrThisIsA.setText("  This is a project build to generate reports from \r\nthe sample Employee DB.\r\n\r\nThis was developed by David Riy\r\n\r\nLorem ipsum dolor sit amet, consectetuer adipiscing \r\nelit, sed diam nonummy nibh euismod tincidunt ut la\r\noreet dolore magna aliquam erat volutpat. Ut wisi e\r\nnim ad minim veniam, quis nostrud exerci tation ullamcor\r\nper suscipit lobortis nisl ut aliquip ex ea commodo cons");
+		txtrThisIsA.setText("  This is a project build to generate reports from "
+				+ "\r\nthe sample Employee DB.\r\n\r\nThis was developed by David Riy\r\n\r\n"
+				+ "(c) Copyright David Riy 2021. All rights reserved. Here I am supposed\n"
+				+ "to write a disclaimer about this application and my company and how\n"
+				+ "you cannot make not fair use without my permission, but since I do not\n"
+				+ "own a company. This project was build with Java and Swing Window\n"
+				+ "Builder plugin. It uses JDBC to recover some data, XML DOM\n"
+				+ "to save configurations and Jasper to generate the reports.");
 		
 		txtrThisIsA.setBounds(12, 13, 410, 185);
 		contentPanel.add(txtrThisIsA);

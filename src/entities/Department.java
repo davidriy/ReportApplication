@@ -1,5 +1,7 @@
 package entities;
-
+/*
+ * Department class
+ */
 public class Department {
 	private String deptNo;
 	private String deptName;

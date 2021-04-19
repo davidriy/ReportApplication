@@ -12,9 +12,9 @@ import javax.swing.border.TitledBorder;
 import entities.Configuration;
 import entities.Department;
 import entities.SavedConfiguration;
-import entities.XmlManager;
 import utils.DBServiceUtil;
 import utils.Util;
+import utils.XmlManager;
 
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
@@ -32,6 +32,9 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/*
+ * Dialog for configuration purpouses
+ */
 public class ConfigurationManager extends JDialog {
 	private JTextField ipField;
 	private JTextField portField;
@@ -59,6 +62,7 @@ public class ConfigurationManager extends JDialog {
 	 * Create the dialog.
 	 */
 	public ConfigurationManager() {
+		setResizable(false);
 		xmlManager = new XmlManager();
 		setBounds(100, 100, 596, 384);
 		getContentPane().setLayout(new CardLayout(0, 0));
@@ -195,7 +199,8 @@ public class ConfigurationManager extends JDialog {
 					try {
 						saveConfiguration(getConfiguration());
 					} catch(Exception ex) {
-						Util.errorDialog("Saving error", "There was an error while attempting to save the configuration. Please check that the co is complete.");
+						ex.printStackTrace();
+						Util.errorDialog("Save error", "There was an error while attempting to save the configuration. Please check that the configuration is complete.");
 					}
 					
 				}
@@ -235,12 +240,8 @@ public class ConfigurationManager extends JDialog {
 							deleteConfiguration((SavedConfiguration)configurationList.getSelectedItem());
 							saveConfiguration(cfg);
 						} catch(Exception exc ) {
-							
 							Util.errorDialog("Update error", "There was an error while attempting to update the selected object. Please make sure that everything is correct before you update");
 						}
-						
-						
-						
 					}
 				});
 				updateBtn.setBounds(396, 42, 83, 31);
@@ -254,15 +255,15 @@ public class ConfigurationManager extends JDialog {
 		loadConfiguration();
 		
 	}
-
+	// Loads saved configuration items
 	private void loadConfiguration() {
 		configurationList.removeAllItems();
 		ArrayList<SavedConfiguration> list = xmlManager.getConfigurationList();
 		for(SavedConfiguration item: list) {
-			System.out.println(item.getName());
 			configurationList.addItem(item);
 		}
 	}
+	// Loads selected configuration from list to fields
 	private void loadSelectedConfiguration() {
 		SavedConfiguration cfg = (SavedConfiguration)configurationList.getSelectedItem();
 		if(cfg != null) {
@@ -274,6 +275,7 @@ public class ConfigurationManager extends JDialog {
 			pathField.setText(cfg.getPath());
 		}
 	}
+	// Returns a SavedConfiguration object with data from fields
 	private SavedConfiguration getConfiguration() {
 		return new SavedConfiguration(
 				nameField.getText(),
@@ -284,17 +286,23 @@ public class ConfigurationManager extends JDialog {
 				pathField.getText()
 				);
 	}
+	// Saves configuration to file
 	private void saveConfiguration(SavedConfiguration configuration) {
-		
-		// Check if connection is correct
-		if(DBServiceUtil.testConnection(configuration.getIp(), Integer.valueOf(configuration.getPort()), configuration.getUsername(), configuration.getPassword())) {
-			Util.informationDialog("Testing connection", "Connection successful.");
-			xmlManager.newConfiguration(configuration);
-			loadConfiguration();
+		if(checkDuplicateName(configuration.getName())) {
+			Util.warningDialog("Configuration name duplicated", "The given name already exists, please pick another one.");
 		} else {
-			Util.errorDialog("Testing connection", "Connection error, check configuration. Configuration not saved");
-		}	
+			// Check if connection is correct
+			if(DBServiceUtil.testConnection(configuration.getIp(), Integer.valueOf(configuration.getPort()), configuration.getUsername(), configuration.getPassword())) {
+				Util.informationDialog("Testing connection", "Connection successful.");
+				xmlManager.newConfiguration(configuration);
+				loadConfiguration();
+			} else {
+				Util.errorDialog("Testing connection", "Connection error, check configuration. Configuration not saved");
+			}	
+		}
+		
 	}
+	// Deletes configuration from file
 	private void deleteConfiguration(SavedConfiguration configuration) {
 		try {
 			xmlManager.deleteConfiguration(configuration);
@@ -303,6 +311,24 @@ public class ConfigurationManager extends JDialog {
 		}
 		loadConfiguration();
 	}
+	/*
+	 * Checks if the configuration name already exists
+	 * @Param: name to check
+	 * @Returns: true if duplicate; false if unique
+	 */
+	private boolean checkDuplicateName(String name) {
+		boolean exists = false;
+		if(configurationList.getItemCount() > 0) {
+			for(int i = 0; i < configurationList.getItemCount(); i++) {
+				if(name.equals(configurationList.getItemAt(i).getName())) {
+					exists = true;
+					break;
+				}
+			}
+		}
+		return exists;
+	}
+	// Resets fields data
 	private void newConfiguration() {
 		nameField.setText("");
 		ipField.setText("");

@@ -1,5 +1,7 @@
 package design;
-
+/*
+ * Enumeration with the distincs types of panels available for App
+ */
 public enum Panels {
 	MAIN_PANEL,
 	CONFIGURATION_PANEL,

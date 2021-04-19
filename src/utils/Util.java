@@ -14,7 +14,7 @@ public class Util {
 		pathSelector.setCurrentDirectory(new File("."));
 		pathSelector.setDialogTitle("Select path to export files");
 		if(pathSelector.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			path = pathSelector.getCurrentDirectory().getAbsolutePath();
+			path = pathSelector.getSelectedFile().getAbsolutePath();
 		}
 		return path;
 	}
@@ -23,6 +23,12 @@ public class Util {
 	 */
 	public static void errorDialog(String title, String message) {		
 		JOptionPane optionPane = new JOptionPane(message, JOptionPane.ERROR_MESSAGE);    
+		JDialog dialog = optionPane.createDialog(title);
+		dialog.setAlwaysOnTop(true);
+		dialog.setVisible(true);
+	}
+	public static void warningDialog(String title, String message) {		
+		JOptionPane optionPane = new JOptionPane(message, JOptionPane.WARNING_MESSAGE);    
 		JDialog dialog = optionPane.createDialog(title);
 		dialog.setAlwaysOnTop(true);
 		dialog.setVisible(true);
@@ -44,11 +50,14 @@ public class Util {
 	}
 	public static String getFileName() {
 		String name = JOptionPane.showInputDialog("Please give a name for the generated file/s");
-		if(ConverterUtil.containsIllegals(name)) {
-			fileNameErrorDialog(name);
-		} else {
-			return name;
+		if(name != null) {
+			if(ConverterUtil.containsIllegals(name)) {
+				fileNameErrorDialog(name);
+			} else {
+				return name;
+			}
 		}
+		
 		return null;
 	}
 	/*

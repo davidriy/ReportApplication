@@ -28,7 +28,7 @@ public class Configuration {
 	private boolean greetingDisplayed = false;
 	private boolean configurationChecked = false;
 	
-	public static File configFile = new File("./src/Utils/config.properties");
+	public static File configFile = new File("./src/utils/config.properties");
 
 	// Retrieves the configuration from the configuration file
 	public static Configuration obtainConfig() {
@@ -83,7 +83,9 @@ public class Configuration {
 	      e.printStackTrace();
 	    } 
 	}
-	
+	/*
+	 * Constructors
+	 */
 	public Configuration(String ip, String port, String username, String password, String path) {
 		super();
 		this.ip = ip;
@@ -114,6 +116,9 @@ public class Configuration {
 	public Configuration() {
 		super();
 	}
+	/*
+	 * Getters & setters
+	 */
 	public String getIp() {
 		return ip;
 	}

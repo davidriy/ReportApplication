@@ -50,7 +50,7 @@ public class JasperUtil {
 		// Export to: 
 		if(configuration.isFirstPDF()) exportToPDF(print, configuration.getPath(), filename);
 		if(configuration.isFirstCSV()) exportToCSV(print, configuration.getPath(), filename);
-		if(configuration.isFirstPDF()) exportToHTML(print, configuration.getPath(), filename);
+		if(configuration.isFirstHTML()) exportToHTML(print, configuration.getPath(), filename);
 	}
 	/*
 	 * Generates report from given parameters. Obtains connection from given configuration
@@ -71,7 +71,7 @@ public class JasperUtil {
 		// Export to: 
 		if(configuration.isSecondPDF()) exportToPDF(print, configuration.getPath(), filename);
 		if(configuration.isSecondCSV()) exportToCSV(print, configuration.getPath(), filename);
-		if(configuration.isSecondPDF()) exportToHTML(print, configuration.getPath(), filename);
+		if(configuration.isSecondHTML()) exportToHTML(print, configuration.getPath(), filename);
 	}
 	/*
 	 * Generates report from given parameters. Obtains connection from given configuration
@@ -96,7 +96,7 @@ public class JasperUtil {
 		createDir(configuration.getPath());
 		if(configuration.isThirdPDF()) exportToPDF(print, configuration.getPath(), filename);
 		if(configuration.isThirdCSV()) exportToCSV(print, configuration.getPath(), filename);
-		if(configuration.isThirdPDF()) exportToHTML(print, configuration.getPath(), filename);
+		if(configuration.isThirdHTML()) exportToHTML(print, configuration.getPath(), filename);
 	}
 	// Creates a directory in the given path
 	private static void createDir(String path) {
@@ -110,8 +110,9 @@ public class JasperUtil {
 		JRPdfExporter exporter = new JRPdfExporter();
 		ExporterInput exporterInput = new SimpleExporterInput(jasperPrint);
 		exporter.setExporterInput(exporterInput);
+		filename = filename != null ? filename : "file";
 		OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(
-				outputPath + "/"+filename+".pdf");
+				outputPath + "/"+ filename +".pdf");
 		exporter.setExporterOutput(exporterOutput);
 		SimplePdfExporterConfiguration config = new SimplePdfExporterConfiguration();
 		exporter.setConfiguration(config);
@@ -123,7 +124,8 @@ public class JasperUtil {
 	private static void exportToCSV(JasperPrint jasperPrint, String outputPath, String filename) throws JRException {
 		JRCsvExporter exporter = new JRCsvExporter();
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-		exporter.setExporterOutput(new SimpleWriterExporterOutput(new File(outputPath + "/"+filename+".csv")));
+		filename = filename != null ? filename : "file";
+		exporter.setExporterOutput(new SimpleWriterExporterOutput(new File(outputPath + "/" + filename +".csv")));
 	    SimpleCsvReportConfiguration configuration = new SimpleCsvReportConfiguration();
 	    exporter.setConfiguration(configuration);
 	    exporter.exportReport();
@@ -135,7 +137,8 @@ public class JasperUtil {
 		HtmlExporter exporter = new HtmlExporter();
 	    exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-		exporter.setExporterOutput(new SimpleHtmlExporterOutput(new File(outputPath + "/"+filename+".html")));
+		filename = filename != null ? filename : "file";
+		exporter.setExporterOutput(new SimpleHtmlExporterOutput(new File(outputPath + "/"+ filename +".html")));
 	    exporter.exportReport();
 	}
 }

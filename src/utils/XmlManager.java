@@ -1,10 +1,5 @@
-package entities;
+package utils;
 
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,18 +17,25 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import entities.SavedConfiguration;
+/*
+ * XmlManager class - manages saved configurations xml file
+ */
 public class XmlManager {
-    private final String FILE = "./src/Utils/saved_configuration.xml";
+    private final String FILE = "./src/utils/saved_configuration.xml";
 
     // DOM
     Document doc;
     Transformer transformer;
 
     public static void main(String[] args) {
-    	System.out.println("eNTRA");
     	XmlManager mng = new XmlManager();
     	mng.initialize();
-    	System.out.println("inicializado");
     	ArrayList<SavedConfiguration> list = mng.getConfigurationList();
 		for(SavedConfiguration item: list) {
 			System.out.println(item.getName());
@@ -42,23 +44,6 @@ public class XmlManager {
     public XmlManager(){
         this.initialize();
     }
-    /*
-    // Checks if the file exists
-    private boolean exists(){
-        boolean existe = false;
-        try {
-            context.openFileInput(FILE_NAME);
-            context.openFileInput(FILE_NAME).close();
-            existe = true;
-        } catch (FileNotFoundException e) {
-            existe =  false;
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return existe;
-    }
-*/
     
     private void initialize() {
     	if(exists()) {
@@ -78,7 +63,6 @@ public class XmlManager {
         			System.out.println(e.getMessage());
         		}
     	} else {
-    		System.out.println("crea xml");
     		createXML();
     		initialize();
     	}
@@ -94,9 +78,9 @@ public class XmlManager {
     }
     private void createXML() {
     	 try {
-             OutputStreamWriter alarm = new OutputStreamWriter(new FileOutputStream(FILE));
-             alarm.write("<configurations></configurations>");
-             alarm.close();
+             OutputStreamWriter config = new OutputStreamWriter(new FileOutputStream(FILE));
+             config.write("<configurations></configurations>");
+             config.close();
          } catch (FileNotFoundException e) {
              e.printStackTrace();
          } catch (IOException e) {
@@ -146,7 +130,6 @@ public class XmlManager {
         ArrayList<SavedConfiguration> configurations = new ArrayList<SavedConfiguration>();
         SavedConfiguration configuration;
         for(int i = 0; i < nList.getLength(); i++){
-            // Recorro la lista y obtengo el nodo en el que estoy actualmente
             configuration = new SavedConfiguration();
             Node node = nList.item(i);
             Element element = (Element)node;
@@ -175,8 +158,8 @@ public class XmlManager {
         this.addConfiguration(configuration);
         this.save();
     }
-
-   
+    
+    // Returns the node that matches the name given
     private Node getMatchingNode(String name) {
         NodeList nList = this.getNodeList();
         Node nodeTitulo = null;

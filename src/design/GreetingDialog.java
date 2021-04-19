@@ -17,7 +17,9 @@ import javax.swing.JTextPane;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/*
+ * Greeting dialog for initial run
+ */
 public class GreetingDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

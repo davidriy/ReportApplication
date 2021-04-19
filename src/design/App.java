@@ -43,12 +43,12 @@ import entities.Configuration;
 import entities.Department;
 import entities.Employee;
 import entities.SavedConfiguration;
-import entities.XmlManager;
 import net.sf.jasperreports.engine.JRException;
 import utils.ConverterUtil;
 import utils.DBServiceUtil;
 import utils.JasperUtil;
 import utils.Util;
+import utils.XmlManager;
 
 import javax.swing.ImageIcon;
 
@@ -185,6 +185,10 @@ public class App {
 		btnFirstReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.FIRST_REPORT_PANEL);
+				if(comboBoxFirstReportDepartments.getItemCount() == 0) {
+					loadFirstReportComboBox();
+				}
+				
 			}
 		});
 		btnFirstReport.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -200,6 +204,10 @@ public class App {
 		btnSecondReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.SECOND_REPORT_PANEL);
+				if(comboBoxSecondReportEmployees.getItemCount() == 0) {
+					loadSecondReportComboBox();
+				}
+				
 			}
 		});
 		btnSecondReport.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -230,8 +238,6 @@ public class App {
 		btnConfiguration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.CONFIGURATION_PANEL);
-				// When configuration is entered - reminder label must be disabled and config file updated
-				configurationEntered();
 			}
 		});
 	}
@@ -365,6 +371,8 @@ public class App {
 			public void actionPerformed(ActionEvent e) {
 				ConfigurationManager cfg = new ConfigurationManager();
 				cfg.setVisible(true);
+				// When configuration is entered - reminder label must be disabled and config file updated
+				configurationEntered();
 			}
 		});
 		btnManageSavedConfiguration.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -380,7 +388,7 @@ public class App {
 		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRefresh.setBounds(272, 66, 119, 32);
 		configurationPanel.add(btnRefresh);
-		
+		// Instantiation of configuration and xml manager objects
 		configuration = new Configuration();
 		xmlManager = new XmlManager();
 	}
@@ -460,8 +468,6 @@ public class App {
 		lblCopyright.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		lblCopyright.setBounds(501, 320, 83, 17);
 		firstReportPanel.add(lblCopyright);
-		
-		loadFirstReportComboBox();
 	}
 	// Manages Second Report panel and components
 	private void secondReportPanelMng() {
@@ -539,9 +545,6 @@ public class App {
 		lblCopyright.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		lblCopyright.setBounds(501, 320, 83, 17);
 		secondReportPanel.add(lblCopyright);
-		
-		// Load data into combo box
-		loadSecondReportComboBox();
 	}
 	// Manages Third Report panel and components
 	private void thirdReportPanelMng() {
@@ -651,8 +654,6 @@ public class App {
             	dateTo = getDateStrFromPickerRaw(dateToPicker);
             }
         });
-		
-
 	}
 	// Manages Menu bar items
 	private void menuBarMng() {
@@ -678,7 +679,6 @@ public class App {
 		fileMenuConfiguration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.CONFIGURATION_PANEL);
-				configurationEntered();
 			}
 		});
 		fileMenuOpen.add(fileMenuConfiguration);
@@ -687,6 +687,7 @@ public class App {
 		fileMenuFirstReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.FIRST_REPORT_PANEL);
+				loadFirstReportComboBox();
 			}
 		});
 		fileMenuOpen.add(fileMenuFirstReport);
@@ -695,6 +696,7 @@ public class App {
 		fileMenuSecondReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.SECOND_REPORT_PANEL);
+				loadSecondReportComboBox();
 			}
 		});
 		fileMenuOpen.add(fileMenuSecondReport);
@@ -855,7 +857,7 @@ public class App {
 	 * Loads FirstReportPanel's employee combobox list
 	 */
 	private void loadFirstReportComboBox() {
-		ArrayList<Department> depts  = DBServiceUtil.getDepartmentList();
+		ArrayList<Department> depts  = DBServiceUtil.getDepartmentList(configuration);
 		for(Department dept: depts) {
 			comboBoxFirstReportDepartments.addItem(dept);
 		}
@@ -864,7 +866,7 @@ public class App {
 	 * Loads SeconReportPanel's employee combobox list
 	 */
 	private void loadSecondReportComboBox() {
-		ArrayList<Employee> emp  = DBServiceUtil.getEmployeeList();
+		ArrayList<Employee> emp  = DBServiceUtil.getEmployeeList(configuration);
 		for(Employee empl: emp) {
 			comboBoxSecondReportEmployees.addItem(empl);
 		}
@@ -878,6 +880,8 @@ public class App {
 	private void switchToPanel(Panels panel) {
 		CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
         cardLayout.show(contentPanel, panel.toString());
+        
+        
 	}
 	/*
 	 * Returns a dd/mm/yy format date string
@@ -924,7 +928,7 @@ public class App {
 	
 	private void generateReport(Panels panel) {
 		if(panel == panel.FIRST_REPORT_PANEL) {
-			if(Util.checkFormatSelected(isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected(), isPDFFirstReport.isSelected())) {
+			if(Util.checkFormatSelected(isPDFFirstReport.isSelected(), isCSVFirstReport.isSelected(), isHTMLFirstReport.isSelected())) {
 				String name = Util.getFileName();
 				if(name != null) {
 					generateFirstReport(name, (Department) comboBoxFirstReportDepartments.getSelectedItem());
@@ -933,7 +937,7 @@ public class App {
 				
 			}
 		} else if(panel == panel.SECOND_REPORT_PANEL) {
-			if(Util.checkFormatSelected(isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected(), isPDFSecondReport.isSelected())) {
+			if(Util.checkFormatSelected(isPDFSecondReport.isSelected(), isCSVSecondReport.isSelected(), isHTMLSecondReport.isSelected())) {
 				String name = Util.getFileName();
 				if(name != null) {
 					generateSecondReport(name, (Employee) comboBoxSecondReportEmployees.getSelectedItem());
