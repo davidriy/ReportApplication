@@ -7,9 +7,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,8 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -35,7 +30,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jdatepicker.DateModel;
 import org.jdatepicker.DatePicker;
 import org.jdatepicker.JDatePicker;
 
@@ -44,13 +38,10 @@ import entities.Department;
 import entities.Employee;
 import entities.SavedConfiguration;
 import net.sf.jasperreports.engine.JRException;
-import utils.ConverterUtil;
 import utils.DBServiceUtil;
 import utils.JasperUtil;
 import utils.Util;
 import utils.XmlManager;
-
-import javax.swing.ImageIcon;
 
 public class App {
 	/*
@@ -188,7 +179,6 @@ public class App {
 				if(comboBoxFirstReportDepartments.getItemCount() == 0) {
 					loadFirstReportComboBox();
 				}
-				
 			}
 		});
 		btnFirstReport.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -206,8 +196,7 @@ public class App {
 				switchToPanel(Panels.SECOND_REPORT_PANEL);
 				if(comboBoxSecondReportEmployees.getItemCount() == 0) {
 					loadSecondReportComboBox();
-				}
-				
+				}				
 			}
 		});
 		btnSecondReport.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -234,7 +223,6 @@ public class App {
 		lblCheckConfiguration.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblCheckConfiguration.setBounds(78, 282, 430, 25);
 		mainPanel.add(lblCheckConfiguration);
-		
 		btnConfiguration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchToPanel(Panels.CONFIGURATION_PANEL);
@@ -906,7 +894,6 @@ public class App {
 		try {
 			Date dateFrom = new SimpleDateFormat("dd/MM/yyyy").parse(getDateStrFromPicker(dateFromPicker));
 			Date dateTo = new SimpleDateFormat("dd/MM/yyyy").parse(getDateStrFromPicker(dateToPicker));
-			int dateCompare = dateFrom.compareTo(dateTo);
 			if(dateFrom.equals(dateTo)){
 				// BothDatesEqual
 				Util.errorDialog("Date error", "Given dates cannot be equal.");
@@ -927,7 +914,7 @@ public class App {
 	 */
 	
 	private void generateReport(Panels panel) {
-		if(panel == panel.FIRST_REPORT_PANEL) {
+		if(panel == Panels.FIRST_REPORT_PANEL) {
 			if(Util.checkFormatSelected(isPDFFirstReport.isSelected(), isCSVFirstReport.isSelected(), isHTMLFirstReport.isSelected())) {
 				String name = Util.getFileName();
 				if(name != null) {
@@ -936,7 +923,7 @@ public class App {
 				}
 				
 			}
-		} else if(panel == panel.SECOND_REPORT_PANEL) {
+		} else if(panel == Panels.SECOND_REPORT_PANEL) {
 			if(Util.checkFormatSelected(isPDFSecondReport.isSelected(), isCSVSecondReport.isSelected(), isHTMLSecondReport.isSelected())) {
 				String name = Util.getFileName();
 				if(name != null) {
@@ -945,7 +932,7 @@ public class App {
 				}
 				
 			}
-		} else if(panel == panel.THIRD_REPORT_PANEL) {
+		} else if(panel == Panels.THIRD_REPORT_PANEL) {
 			if(dateFrom != null && dateTo != null) {
 				// Check if dates are OK
 				if(checkDateInput()) {

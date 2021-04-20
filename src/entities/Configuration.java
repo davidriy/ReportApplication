@@ -28,7 +28,7 @@ public class Configuration {
 	private boolean greetingDisplayed = false;
 	private boolean configurationChecked = false;
 	
-	public static File configFile = new File("./src/utils/config.properties");
+	public static File configFile = new File("./Resources/Config/config.properties");
 
 	// Retrieves the configuration from the configuration file
 	public static Configuration obtainConfig() {

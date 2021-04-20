@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configurations>
-                                                    
+                                                        
 
     
 
@@ -21,27 +21,31 @@
 
     
 
+    
+    
+    
+        
     
     
     <configuration>
                         
         
-        <name>Configuration_1</name>
+        <name>Configuration_2</name>
                         
         
-        <ip>localhost</ip>
+        <ip>194.224.79.42</ip>
                         
         
-        <port>3306</port>
+        <port>43306</port>
                         
         
         <path>C:\Users\David-Clase\Desktop</path>
                         
         
-        <username>root</username>
+        <username>alumne</username>
                         
         
-        <password>root</password>
+        <password>tofol</password>
                     
     
     </configuration>
@@ -49,22 +53,22 @@
     
     <configuration>
                 
-        <name>Configuration_2</name>
+        <name>Configuration_1s</name>
                 
-        <ip>194.224.79.42</ip>
+        <ip>localhost</ip>
                 
-        <port>43306</port>
+        <port>3306</port>
                 
         <path>C:\Users\David-Clase\Desktop</path>
                 
-        <username>alumne</username>
+        <username>root</username>
                 
-        <password>tofol</password>
+        <password>root</password>
             
     </configuration>
     
     <configuration>
-        <name>Configuration_1s</name>
+        <name>Configuration_1ss</name>
         <ip>localhost</ip>
         <port>3306</port>
         <path>C:\Users\David-Clase\Desktop</path>

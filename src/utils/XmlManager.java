@@ -27,7 +27,7 @@ import entities.SavedConfiguration;
  * XmlManager class - manages saved configurations xml file
  */
 public class XmlManager {
-    private final String FILE = "./src/utils/saved_configuration.xml";
+    private final String FILE = "./Resources/Config/saved_configuration.xml";
 
     // DOM
     Document doc;
